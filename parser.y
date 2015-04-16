@@ -49,7 +49,7 @@ extern FILE * yyin;
 %token <symbol>SYMBOL_LIT_STRING 6 
 %token  <symbol>SYMBOL_IDENTIFIER 7
 
-%type <astree> type init expression out program global_var_def function_def  arg command_list simple_command atrib value output flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq 
+%type <astree> type init expression output_rest program global_var_def function_def  arg command_list simple_command atrib value  flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq 
 
 
 %left '+' '-'
@@ -95,23 +95,24 @@ global_var_def:
 	;
 
 function_def: 
-	SYMBOL_IDENTIFIER '(' param ')' local_var_def_list '{' command_list '}' 
+	SYMBOL_IDENTIFIER '(' param ')' local_var_def_list  command_list 
 			{$$ = astcreate(FUNC_DEF,
 					0,
 					astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0)
-					,$3,$5,$7);}	
+					,$3,$5,$6);}	
 	;
 
+command_list: '{' commands '}'
 
-command_list: 
-	|simple_command ';' command_list
+commands: 
+	|simple_command ';' commands
 	;
 
 simple_command: 
 	|atrib
 	|flux_control 
 	|KW_INPUT SYMBOL_IDENTIFIER 
-	|output
+	|KW_OUTPUT expression output_rest
 	|KW_RETURN expression
 	;
 atrib: 
@@ -154,29 +155,26 @@ value:	SYMBOL_LIT_INTEGER 				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
 	|SYMBOL_LIT_STRING				{$$ = astcreate(SYMBOL_LIT_STRING,$1,0,0,0,0);}
 	;
 	
-output:	KW_OUTPUT out
+output_rest:						{$$ = 0;}
+	|',' expression output_rest			{$$ = astcreate(OUT_REST,0,$2,$3,0,0);}
 	;
 
-out:	out ',' out
-	SYMBOL_LIT_STRING
-	|expression			
-	;
 
 flux_control: 
-	KW_IF '('expression')' then
-	|KW_LOOP '(' simple_command ';' expression ';' simple_command ')' '{'command_list'}'
+	KW_IF '('expression')' then			{$$ = astcreate(KW_IF,0,$3,$5,0,0);}
+	|KW_LOOP '(' simple_command ';' expression ';' simple_command ')' command_list {$$ = astcreate(KW_LOOP,0,$3,$5,$7,$9);}
 	;
 
 then: 
-	KW_THEN option else
+	KW_THEN option else 				{$$ = astcreate(KW_THEN,0,$2,$3,0,0);}
 	;
-else: 
-	| KW_ELSE option
+else: 							{$$ = 0;}
+	| KW_ELSE option 				{$$ = astcreate(KW_ELSE,0,$2,0,0,0);}
 	;
 
 option: 
-	'{'command_list'}' 
-	|simple_command 
+	command_list 					{$$ = $1;}
+	|simple_command 				{$$ = $1;}
 	;
 
 local_var_def_list: 	
@@ -195,8 +193,8 @@ paramseq:
 	;
 
 symbol_lit_seq:  
-	value
-	|value symbol_lit_seq
+	value						{$$ = $1;}
+	|value symbol_lit_seq				{$$ = astcreate(SYMBOL_LIT_SEQ,0,$1,$2,0,0);}
 	; 
 type: 	KW_WORD		{$$ = astcreate(KW_WORD,0,0,0,0,0);}	
 	| KW_BOOL	{$$ = astcreate(KW_BOOL,0,0,0,0,0);}	

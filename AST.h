@@ -27,7 +27,8 @@ typedef struct astree_node
 #define EXP_ARRAY_ACCESS 26
 #define EXP_FUNC_CALL 27
 #define ARG_SEQ 28
-
+#define OUT_REST 29 //output sequence
+#define SYMBOL_LIT_SEQ 30
 astree_node* astcreate(int type, struct hash *symbol, astree_node *son0, astree_node *son1, astree_node *son2, astree_node *son3);
 void printast(astree_node* astree, int num);
 
