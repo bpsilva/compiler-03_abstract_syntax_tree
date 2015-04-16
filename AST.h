@@ -1,6 +1,6 @@
 #ifndef _AST_H
 #define _AST_H
-
+#include <stdio.h>
 #define MAX_SONS 4
 typedef struct astree_node
 {
@@ -9,6 +9,8 @@ typedef struct astree_node
 	struct astree_node *sons[MAX_SONS];
 }astree_node;
 
+astree_node* astree;
+FILE *file;
 #define PROGRAM 10 
 #define GLOBAL_VAR_DEF 12
 #define FUNC_DEF 13

@@ -1,10 +1,13 @@
 target: all
 
-all: hash.o  y.tab.o lex.yy.o
-	gcc -o etapa2  hash.o lex.yy.o y.tab.o
+all: hash.o  y.tab.o lex.yy.o decompiler.o
+	gcc -o etapa3  hash.o lex.yy.o y.tab.o decompiler.o
 
 hash.o: hash.c
 	gcc -c hash.c
+
+decompiler.o: decompiler.c
+	gcc -c decompiler.c
 
 lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
@@ -20,7 +23,8 @@ y.tab.c: parser.y
 
 clean: 
 	rm *.o
-	rm etapa2
+	rm etapa3
 	rm lex.yy.c
 	rm y.tab.c
 	rm y.tab.h
+

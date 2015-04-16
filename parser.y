@@ -5,7 +5,7 @@
 #include "AST.c"
 #include "hash.h"
   
-astree_node* astree;
+
 
 extern FILE * yyin;
 %}
@@ -205,10 +205,15 @@ type: 	KW_WORD		{$$ = astcreate(KW_WORD,0,0,0,0,0);}
 int main(int arc, char **argv)
 {
 
-int out;
+	int out;
+
 	yyin = fopen(argv[1], "r");
+	file = fopen(argv[2], "w+");
+
 	out = yyparse();
-	printast(astree, 0);
+	//printf("%i", astree->type);
+	asttofile(astree);
+
 	exit (out);
 
 }
