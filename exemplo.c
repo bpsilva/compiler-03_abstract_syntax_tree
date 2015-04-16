@@ -12,7 +12,7 @@ word j:1;
   output "Digite um numero: ";
   loop (i=0; i<10; ++i)
     {
-    ;
+    a = incn(a,1);
     };
   output "Incrementado algumas vezes fica ",a,"\n";
   }

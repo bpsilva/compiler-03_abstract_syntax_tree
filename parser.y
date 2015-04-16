@@ -5,7 +5,7 @@
 #include "AST.c"
 #include "hash.h"
   
-
+astree_node* astree;
 
 extern FILE * yyin;
 %}
@@ -49,7 +49,7 @@ extern FILE * yyin;
 %token <symbol>SYMBOL_LIT_STRING 6 
 %token  <symbol>SYMBOL_IDENTIFIER 7
 
-%type <astree> expression out program global_var_def function_def  arg command_list simple_command atrib value output flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq type
+%type <astree> type init expression out program global_var_def function_def  arg command_list simple_command atrib value output flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq 
 
 
 %left '+' '-'
@@ -62,25 +62,47 @@ extern FILE * yyin;
 
 
 %%
-
-program: 				{$$ = 0;}
-	|function_def program		{$$ = astcreate(FUNC_DEF,0,$1,$2,0,0);}
-	|global_var_def program		{$$ = astcreate(GLOBAL_VAR_DEF,0,$1,$2,0,0);}
+init: program 		{astree = $1;}
+	;
+program: 					{$$ = 0;}
+	|type function_def program		{$$ = astcreate(FUNC_DEF,0,$1,$2,$3,0);}
+	|type global_var_def program		{$$ = astcreate(GLOBAL_VAR_DEF,0,$1,$2,$3,0);}
 	;
 
 global_var_def: 	
-	type SYMBOL_IDENTIFIER ':' value ';'		
-	|type '$'SYMBOL_IDENTIFIER ':' value ';'	
-	|type SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']' ':' symbol_lit_seq ';' 
-	|type SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']'';'		
+	SYMBOL_IDENTIFIER ':' value ';'	
+			{$$ = astcreate(GLOBAL_VAR_DEF_INIT, 0,
+				astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),
+				$3,0,0);}	
+
+	|'$'SYMBOL_IDENTIFIER ':' value ';'
+			{$$ = astcreate(GLOBAL_VAR_DEF_PTR, 0,
+				astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),
+				$4,0,0);}		
+
+	|SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']' ':' symbol_lit_seq ';' 
+				{$$ = astcreate(GLOBAL_VAR_DEF_VEC_INIT,0,
+						astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),
+						astcreate( SYMBOL_LIT_INTEGER,$3,0,0,0,0),
+						$6,0);}		
+
+	|SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']'';'	 	
+				{$$ = astcreate(GLOBAL_VAR_DEF_VEC,0,
+						astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),
+						astcreate( SYMBOL_LIT_INTEGER,$3,0,0,0,0),
+						0,0);}
 	;
 
 function_def: 
-	type SYMBOL_IDENTIFIER '(' param ')' local_var_def_list '{' command_list '}'
+	SYMBOL_IDENTIFIER '(' param ')' local_var_def_list '{' command_list '}' 
+			{$$ = astcreate(FUNC_DEF,
+					0,
+					astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0)
+					,$3,$5,$7);}	
 	;
 
-arg: 	
-	|value ',' arg
+arg: 						
+	|value ',' arg				
 	|SYMBOL_IDENTIFIER ',' arg
 	|SYMBOL_IDENTIFIER 
 	|value 
@@ -170,18 +192,20 @@ symbol_lit_seq:
 	value
 	|value symbol_lit_seq
 	; 
-type: 	KW_WORD				
-	| KW_BOOL			
-	| KW_BYTE			
-
+type: 	KW_WORD		{$$ = astcreate(KW_WORD,0,0,0,0,0);}	
+	| KW_BOOL	{$$ = astcreate(KW_BOOL,0,0,0,0,0);}	
+	| KW_BYTE	{$$ = astcreate(KW_BYTE,0,0,0,0,0);}	
+	;
 %%
 
 int main(int arc, char **argv)
 {
 
-
+int out;
 	yyin = fopen(argv[1], "r");
-	exit (yyparse());
+	out = yyparse();
+	printast(astree);
+	exit (out);
 
 }
 
