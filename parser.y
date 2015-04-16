@@ -1,7 +1,17 @@
 %{
 #include<stdlib.h>
 #include<stdio.h>
-#include"hash.h"
+
+ #ifndef AST_H_
+  #define AST_H_
+  #include "AST.h"
+  #endif
+
+ #ifndef HASH_H_
+  #define HASH_H_
+  #include "hash.h"
+  #endif
+
 
 extern FILE * yyin;
 %}
@@ -30,6 +40,12 @@ extern FILE * yyin;
 {
 	struct hash* symbol;
 	int n;
+
+}
+%union
+{
+	struct astree *astree;
+
 }
 
 
@@ -52,6 +68,7 @@ extern FILE * yyin;
  
 %left KW_IF KW_ELSE
 
+%type <astree> expression
 
 %%
 

@@ -6,7 +6,15 @@
 #define FALSE 0
 #include<string.h>
 #include "y.tab.h"
-#include"hash.h"
+
+
+
+
+ #ifndef HASH_H_
+  #define HASH_H_
+  #include "hash.h"
+  #endif
+
 int isRunning();
 int getLineNumber();
 int yywrap();

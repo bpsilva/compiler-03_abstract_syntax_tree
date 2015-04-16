@@ -1,4 +1,16 @@
-#include "AST.h"
+
+ #ifndef AST_H_
+  #define AST_H_
+  #include "AST.h"
+  #endif
+
+ #ifndef HASH_H_
+  #define HASH_H_
+  #include "hash.h"
+  #endif
+
+
+
 #include <stdlib.h>
 #include <stdio.h>
 
