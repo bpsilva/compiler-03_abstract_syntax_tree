@@ -1,23 +1,14 @@
 
- #ifndef AST_H_
-  #define AST_H_
-  #include "AST.h"
-  #endif
-
- #ifndef HASH_H_
-  #define HASH_H_
-  #include "hash.h"
-  #endif
-
-
-
+#include "AST.h"
+#include "hash.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-ASTREE* create(int type, hash_node *symbol, struct astre_node *son0, struct astre_node *son1, struct astre_node *son2,struct astre_node *son3 )
+
+astree_node* astcreate(int type, struct hash *symbol,  astree_node *son0,  astree_node *son1,  astree_node *son2, astree_node *son3)
 {
-	ASTREE *newnode = 0;
-	newnode = (ASTREE*)calloc(1, sizeof(ASTREE));
+	astree_node *newnode = 0;
+	newnode = (astree_node*)calloc(1, sizeof(astree_node));
 	newnode->symbol = symbol;
 	newnode->type = type;
 	newnode->sons[0] = son0;
@@ -27,5 +18,12 @@ ASTREE* create(int type, hash_node *symbol, struct astre_node *son0, struct astr
 	return newnode;
 }
 
+void printast(astree_node* node)
+{
+
+
+
+
+}
 
 

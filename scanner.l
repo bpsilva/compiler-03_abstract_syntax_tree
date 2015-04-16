@@ -10,10 +10,8 @@
 
 
 
- #ifndef HASH_H_
-  #define HASH_H_
-  #include "hash.h"
-  #endif
+#include "hash.h"
+
 
 int isRunning();
 int getLineNumber();

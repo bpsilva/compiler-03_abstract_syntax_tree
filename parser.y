@@ -2,15 +2,9 @@
 #include<stdlib.h>
 #include<stdio.h>
 
- #ifndef AST_H_
-  #define AST_H_
-  #include "AST.h"
-  #endif
-
- #ifndef HASH_H_
-  #define HASH_H_
-  #include "hash.h"
-  #endif
+#include "AST.c"
+#include "hash.h"
+  
 
 
 extern FILE * yyin;
@@ -39,26 +33,23 @@ extern FILE * yyin;
 %union
 {
 	struct hash* symbol;
+	struct astree_node *astree;
 	int n;
 
 }
-%union
-{
-	struct astree *astree;
-
-}
 
 
-%token SYMBOL_UNDEFINED 0
-%token  SYMBOL_LIT_INTEGER 1
-%token  SYMBOL_LIT_FLOATING 2
-%token  SYMBOL_LIT_TRUE 3
-%token  SYMBOL_LIT_FALSE 4
-%token SYMBOL_LIT_CHAR 5
-%token SYMBOL_LIT_STRING 6 
-%token  SYMBOL_IDENTIFIER 7
 
+%token <symbol>SYMBOL_UNDEFINED 0
+%token  <symbol>SYMBOL_LIT_INTEGER 1
+%token  <symbol>SYMBOL_LIT_FLOATING 2
+%token  <symbol>SYMBOL_LIT_TRUE 3
+%token <symbol> SYMBOL_LIT_FALSE 4
+%token <symbol>SYMBOL_LIT_CHAR 5
+%token <symbol>SYMBOL_LIT_STRING 6 
+%token  <symbol>SYMBOL_IDENTIFIER 7
 
+%type <astree> expression out program global_var_def function_def  arg command_list simple_command atrib value output flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq type
 
 
 %left '+' '-'
@@ -68,19 +59,19 @@ extern FILE * yyin;
  
 %left KW_IF KW_ELSE
 
-%type <astree> expression
+
 
 %%
 
-program: 
-	|function_def program
-	|global_var_def program
+program: 				{$$ = 0;}
+	|function_def program		{$$ = astcreate(FUNC_DEF,0,$1,$2,0,0);}
+	|global_var_def program		{$$ = astcreate(GLOBAL_VAR_DEF,0,$1,$2,0,0);}
 	;
 
-global_var_def: 
-	type SYMBOL_IDENTIFIER ':' value ';'
-	|type '$'SYMBOL_IDENTIFIER ':' value ';'
-	|type SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']' ':' symbol_lit_seq ';'
+global_var_def: 	
+	type SYMBOL_IDENTIFIER ':' value ';'		
+	|type '$'SYMBOL_IDENTIFIER ':' value ';'	
+	|type SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']' ':' symbol_lit_seq ';' 
 	|type SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INTEGER ']'';'		
 	;
 
@@ -114,13 +105,13 @@ atrib:
 	;
 
 expression:
-	expression '+' expression
-	|expression '-'expression
-	|expression '*' expression
-	|expression '/' expression
-	|expression '>' expression 
+	expression '+' expression			{$$ = astcreate(0,0,$1,$3,0,0);}
+	|expression '-'expression			{$$ = astcreate(0,0,0,$1,$3,0);}
+	|expression '*' expression			{$$ = astcreate(0,0,0,$1,$3,0);}
+	|expression '/' expression			{$$ = astcreate(0,0,0,$1,$3,0);}
+	|expression '>' expression 			{$$ = astcreate(0,0,0,$1,$3,0);}
 	|expression '<' expression
-	|SYMBOL_IDENTIFIER '[' expression ']' 
+	|SYMBOL_IDENTIFIER '[' expression ']' 		{$$ = astcreate(0,0,0,$3,0,0);}
 	|SYMBOL_IDENTIFIER
 	|value
 	|SYMBOL_IDENTIFIER '(' arg ')'
@@ -140,7 +131,7 @@ output:	KW_OUTPUT out
 
 out:	out ',' out
 	SYMBOL_LIT_STRING
-	|expression
+	|expression			
 	;
 
 flux_control: 
@@ -187,6 +178,7 @@ type: 	KW_WORD
 
 int main(int arc, char **argv)
 {
+
 
 	yyin = fopen(argv[1], "r");
 	exit (yyparse());
