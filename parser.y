@@ -49,7 +49,7 @@ extern FILE * yyin;
 %token <symbol>SYMBOL_LIT_STRING 6 
 %token  <symbol>SYMBOL_IDENTIFIER 7
 
-%type <astree> type init expression output_rest program global_var_def function_def  arg command_list simple_command atrib value  flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq 
+%type <astree> type init expression output_rest program global_var_def function_def  arg command_list simple_command atrib value  flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq commands
 
 
 %left '+' '-'
@@ -102,24 +102,24 @@ function_def:
 					,$3,$5,$6);}	
 	;
 
-command_list: '{' commands '}'
+command_list: '{' commands '}'		{$$ = astcreate(CMD_LIST,0,$2,0,0,0);}
 
-commands: 
-	|simple_command ';' commands
+commands: 				{$$ = 0;}	
+	|simple_command ';' commands	{$$ = astcreate(CMDS,0,$1,$3,0,0);}	
 	;
 
-simple_command: 
-	|atrib
-	|flux_control 
-	|KW_INPUT SYMBOL_IDENTIFIER 
-	|KW_OUTPUT expression output_rest
-	|KW_RETURN expression
+simple_command: 					{$$ = 0;}	
+	|atrib						{$$ = $1;}	
+	|flux_control 					{$$ = $1;}		
+	|KW_INPUT SYMBOL_IDENTIFIER 			{$$ = astcreate(KW_INPUT, 0, astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);}
+	|KW_OUTPUT expression output_rest 		{$$ = astcreate(KW_OUTPUT,0,$2,$3, 0,0 );}
+	|KW_RETURN expression				{$$ = astcreate(KW_RETURN,0,$2,0,0,0);}
 	;
 atrib: 
-	'+''+'SYMBOL_IDENTIFIER
-	|SYMBOL_IDENTIFIER '+''+'
-	|SYMBOL_IDENTIFIER '=' expression
-	| SYMBOL_IDENTIFIER '[' expression ']' '=' expression
+	'+''+'SYMBOL_IDENTIFIER				{$$ = astcreate(PRE_INC,0,astcreate(SYMBOL_IDENTIFIER,$3,0,0,0,0),0,0,0);}
+	|SYMBOL_IDENTIFIER '+''+'			{$$ = astcreate(POST_INC,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),0,0,0);}
+	|SYMBOL_IDENTIFIER '=' expression		{$$ = astcreate(SIMPLE_ATRIB,0, astcreate(SYMBOL_IDENTIFIER, $1,0,0,0,0),$3,0,0);}
+	| SYMBOL_IDENTIFIER '[' expression ']' '=' expression  {$$ = astcreate(INDEX_ATRIB,0, astcreate(SYMBOL_IDENTIFIER, $1,0,0,0,0),$3,$6,0);}
 	;
 
 expression:
@@ -135,12 +135,12 @@ expression:
 	|SYMBOL_IDENTIFIER				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
 	|value						{$$ = $1;}
 	|SYMBOL_IDENTIFIER '(' arg ')'			{$$ = astcreate(EXP_FUNC_CALL,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
-	|'&'SYMBOL_IDENTIFIER 
-	|'$'SYMBOL_IDENTIFIER  
+	|'&'SYMBOL_IDENTIFIER				{$$ = astcreate(EXP_ADDR,0,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);} 
+	|'$'SYMBOL_IDENTIFIER  				{$$ = astcreate(EXP_PTR,0,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);} 
 	;
 
 
-arg: 						
+arg: 							{$$ = 0;}
 	|value ',' arg					{$$ = astcreate(ARG_SEQ,0,$1,$3,0,0);}
 	|SYMBOL_IDENTIFIER ',' arg			{$$ = astcreate(ARG_SEQ,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
 	|SYMBOL_IDENTIFIER 				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
@@ -177,19 +177,19 @@ option:
 	|simple_command 				{$$ = $1;}
 	;
 
-local_var_def_list: 	
-	|local_var_def local_var_def_list
+local_var_def_list:					{$$ = 0;}
+	|local_var_def local_var_def_list		{$$ = astcreate(LOCAL_VAR_DEF_LIST,0,$1,$2, 0,0);}
 	;
 
-local_var_def: type SYMBOL_IDENTIFIER ':' value ';' 
-	|type '$'SYMBOL_IDENTIFIER ':' value ';'
+local_var_def: type SYMBOL_IDENTIFIER ':' value ';' 	{$$ = astcreate(LOCAL_VAR_DEF,0,$1,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0), $4,0);}
+	|type '$'SYMBOL_IDENTIFIER ':' value ';'	{$$ = astcreate(LOCAL_VAR_DEF_PTR,0,$1,astcreate(SYMBOL_IDENTIFIER,$3,0,0,0,0), $5,0);}
 	;		
-param: 
-	|type SYMBOL_IDENTIFIER paramseq
+param: 							{$$ = 0;}
+	|type SYMBOL_IDENTIFIER paramseq		{$$ = astcreate(PARAM,0,$1,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),$3,0);}
 	;
 
-paramseq: 
-	| ',' type SYMBOL_IDENTIFIER paramseq
+paramseq: 						{$$ = 0;}
+	| ',' type SYMBOL_IDENTIFIER paramseq		{$$ = astcreate(PARAM_SEQ,0,$2,astcreate(SYMBOL_IDENTIFIER,$3,0,0,0,0),$4,0);}
 	;
 
 symbol_lit_seq:  

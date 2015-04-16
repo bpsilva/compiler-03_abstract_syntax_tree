@@ -29,6 +29,20 @@ typedef struct astree_node
 #define ARG_SEQ 28
 #define OUT_REST 29 //output sequence
 #define SYMBOL_LIT_SEQ 30
+#define PARAM 31
+#define PARAM_SEQ 32
+#define LOCAL_VAR_DEF 33
+#define LOCAL_VAR_DEF_LIST 34
+#define LOCAL_VAR_DEF_PTR 35
+#define CMD 36
+#define CMD_LIST 37
+#define CMDS 38
+#define PRE_INC 39
+#define POST_INC 40
+#define SIMPLE_ATRIB 41
+#define INDEX_ATRIB 42
+#define EXP_ADDR 43
+#define EXP_PTR 44
 astree_node* astcreate(int type, struct hash *symbol, astree_node *son0, astree_node *son1, astree_node *son2, astree_node *son3);
 void printast(astree_node* astree, int num);
 
