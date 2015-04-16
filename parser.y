@@ -55,6 +55,7 @@ extern FILE * yyin;
 %left '+' '-'
 %left '*' '/'
 %left '>' '<'
+%left "&&" "||"
 
  
 %left KW_IF KW_ELSE
@@ -101,12 +102,6 @@ function_def:
 					,$3,$5,$7);}	
 	;
 
-arg: 						
-	|value ',' arg				
-	|SYMBOL_IDENTIFIER ',' arg
-	|SYMBOL_IDENTIFIER 
-	|value 
-	;
 
 command_list: 
 	|simple_command ';' command_list
@@ -127,25 +122,36 @@ atrib:
 	;
 
 expression:
-	expression '+' expression			{$$ = astcreate(0,0,$1,$3,0,0);}
-	|expression '-'expression			{$$ = astcreate(0,0,0,$1,$3,0);}
-	|expression '*' expression			{$$ = astcreate(0,0,0,$1,$3,0);}
-	|expression '/' expression			{$$ = astcreate(0,0,0,$1,$3,0);}
-	|expression '>' expression 			{$$ = astcreate(0,0,0,$1,$3,0);}
-	|expression '<' expression
-	|SYMBOL_IDENTIFIER '[' expression ']' 		{$$ = astcreate(0,0,0,$3,0,0);}
-	|SYMBOL_IDENTIFIER
-	|value
-	|SYMBOL_IDENTIFIER '(' arg ')'
+	expression '+' expression			{$$ = astcreate(EXP_ADD,0,$1,$3,0,0);}
+	|expression '-'expression			{$$ = astcreate(EXP_SUB,0,$1,$3,0,0);}
+	|expression '*' expression			{$$ = astcreate(EXP_MUL,0,$1,$3,0,0);}
+	|expression '/' expression			{$$ = astcreate(EXP_DIV,0,$1,$3,0,0);}
+	|expression '>' expression 			{$$ = astcreate(EXP_MORE,0,$1,$3,0,0);}
+	|expression '<' expression 			{$$ = astcreate(EXP_LESS,0,$1,$3,0,0);}
+	|expression "||" expression 			{$$ = astcreate(EXP_OR,0,$1,$3,0,0);}
+	|expression "&&" expression 			{$$ = astcreate(EXP_AND,0,$1,$3,0,0);}
+	|SYMBOL_IDENTIFIER '[' expression ']' 		{$$ = astcreate(EXP_ARRAY_ACCESS,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
+	|SYMBOL_IDENTIFIER				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
+	|value						{$$ = $1;}
+	|SYMBOL_IDENTIFIER '(' arg ')'			{$$ = astcreate(EXP_FUNC_CALL,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
 	|'&'SYMBOL_IDENTIFIER 
 	|'$'SYMBOL_IDENTIFIER  
 	;
 
-value:	SYMBOL_LIT_INTEGER 
-	|SYMBOL_LIT_FALSE 
-	|SYMBOL_LIT_TRUE	  		
-	|SYMBOL_LIT_CHAR   			
-	|SYMBOL_LIT_STRING
+
+arg: 						
+	|value ',' arg					{$$ = astcreate(ARG_SEQ,0,$1,$3,0,0);}
+	|SYMBOL_IDENTIFIER ',' arg			{$$ = astcreate(ARG_SEQ,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
+	|SYMBOL_IDENTIFIER 				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
+	|value 						{$$ = $1;}
+	;
+
+
+value:	SYMBOL_LIT_INTEGER 				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
+	|SYMBOL_LIT_FALSE 				{$$ = astcreate(SYMBOL_LIT_FALSE,$1,0,0,0,0);}
+	|SYMBOL_LIT_TRUE	  			{$$ = astcreate(SYMBOL_LIT_TRUE,$1,0,0,0,0);}
+	|SYMBOL_LIT_CHAR   				{$$ = astcreate(SYMBOL_LIT_CHAR,$1,0,0,0,0);}
+	|SYMBOL_LIT_STRING				{$$ = astcreate(SYMBOL_LIT_STRING,$1,0,0,0,0);}
 	;
 	
 output:	KW_OUTPUT out
@@ -204,7 +210,7 @@ int main(int arc, char **argv)
 int out;
 	yyin = fopen(argv[1], "r");
 	out = yyparse();
-	printast(astree);
+	printast(astree, 0);
 	exit (out);
 
 }
