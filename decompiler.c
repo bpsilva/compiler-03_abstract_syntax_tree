@@ -76,7 +76,9 @@ void asttofile(astree_node* node)
 		case EXP_MORE : 
 			operationwrite(">",node);
 			break;
-		case EXP_ARRAY_ACCESS: break;
+		case EXP_ARRAY_ACCESS: 
+			
+			break;
 		case EXP_FUNC_CALL: break;
 		case ARG_SEQ : break;
 		case OUT_REST: break;
@@ -90,8 +92,14 @@ void asttofile(astree_node* node)
 		case LOCAL_VAR_DEF : break;
 		case LOCAL_VAR_DEF_LIST : break;
 		case LOCAL_VAR_DEF_PTR: break;
-		case CMD: break;
-		case CMD_LIST : break;
+		case CMD: 
+			
+		break;
+		case CMD_LIST : 
+			filewrite('{');		
+			asttofile(node->sons[0]);
+			filewrite('}');		
+			break;
 		case CMDS : break;
 		case PRE_INC : break;
 		case POST_INC: break;
