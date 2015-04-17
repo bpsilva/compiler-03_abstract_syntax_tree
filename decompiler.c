@@ -52,14 +52,30 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[2]);
 			writechar(';');
 			break;
-		case EXP_ADD: break;
-		case EXP_SUB : break;
-		case EXP_DIV: break;
-		case EXP_MUL: break;
-		case EXP_OR : break;
-		case EXP_AND: break;
-		case EXP_LESS: break;
-		case EXP_MORE : break;
+		case EXP_ADD: 
+			operationwrite("+",node);
+			break;
+		case EXP_SUB : 
+			operationwrite("-",node);
+			break;
+		case EXP_DIV:
+			operationwrite("/",node);
+			 break;
+		case EXP_MUL: 
+			operationwrite("*",node);
+			break;
+		case EXP_OR : 
+			operationwrite("||",node);	
+			break;
+		case EXP_AND: 
+			operationwrite("&&",node);
+			break;
+		case EXP_LESS: 
+			operationwrite("<",node);
+			break;
+		case EXP_MORE : 
+			operationwrite(">",node);
+			break;
 		case EXP_ARRAY_ACCESS: break;
 		case EXP_FUNC_CALL: break;
 		case ARG_SEQ : break;
@@ -112,6 +128,15 @@ void filewrite(char* text)
 {
 	fprintf(file, "%s", text);
 	
+}
+void operationwrite(char* text, astree_node *node)
+{
+	filewrite(" ");			
+	asttofile(node->sons[0]);
+	filewrite(" ");			
+	filewrite(text);
+	filewrite(" ");			
+	asttofile(node->sons[1]);
 }
 
 void writechar(char c)

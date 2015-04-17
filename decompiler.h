@@ -6,4 +6,5 @@
 void asttofile(astree_node* node);
 void filewrite(char* text);
 void writechar(char c);
+void operationwrite(char* text, astree_node *node);
 #endif
