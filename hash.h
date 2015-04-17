@@ -16,12 +16,12 @@ typedef struct hash
 struct hash *prox;
 char* word;
 int type;
-}hash_node;
+}hash;
 
-hash_node *table[TAM];
+hash *table[TAM];
 
 void print();
-struct hash* insert(char* text, int type);
+hash* insert(char* text, int type);
 void initMe();
 int genAddress();
 

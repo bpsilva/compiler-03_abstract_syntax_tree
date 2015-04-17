@@ -15,12 +15,12 @@ void initMe()
 
 void print()
 {
-hash_node* pointer;
+hash* pointer;
 int i = 0;
 	for(i = 0 ; i < TAM ; i++)
 	{
 		printf("%i: ", i);
-		for(pointer = table[i]; pointer !=0 ; pointer = (struct hash*)pointer->prox)
+		for(pointer = table[i]; pointer !=0 ; pointer = (hash*)pointer->prox)
 		{
 			printf("%s ", pointer->word);
 		}
@@ -31,19 +31,19 @@ int i = 0;
 
 }
 
-struct hash* insert(char* text, int type){
+hash* insert(char* text, int type){
 	int address = genAddress(text);
-	struct hash *pointer = table[address], *aux = table[address];
+	hash *pointer = table[address], *aux = table[address];
 	int achou = 0;
 
 	
-	for(;pointer!=0; aux = pointer,	pointer= (struct hash*)pointer->prox)
+	for(;pointer!=0; aux = pointer,	pointer= (hash*)pointer->prox)
 	{
 		if(!strcmp(text, pointer->word))
 			return pointer;
 	}
 	
-	struct hash *node = (struct hash*)malloc(sizeof(struct hash));
+	struct hash *node = (hash*)malloc(sizeof(struct hash));
 	node->word = (char *)calloc(1, sizeof(text));
 	strcpy(node->word, text);
 	node->prox = 0;

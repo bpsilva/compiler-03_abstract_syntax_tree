@@ -1,11 +1,12 @@
 
 #include "AST.h"
 #include "hash.h"
+#include "y.tab.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 
-astree_node* astcreate(int type, struct hash *symbol,  astree_node *son0,  astree_node *son1,  astree_node *son2, astree_node *son3)
+astree_node* astcreate(int type, hash *symbol,  astree_node *son0,  astree_node *son1,  astree_node *son2, astree_node *son3)
 {
 	astree_node *newnode = 0;
 	newnode = (astree_node*)calloc(1, sizeof(astree_node));
@@ -41,9 +42,11 @@ void printast(astree_node* node, int num)
 	case EXP_AND :printf("EXP_AND\n");break;
 	case EXP_LESS :printf("EXP_LESS\n");break;
 	case EXP_MORE :printf("EXP_MORE\n");break;
+	case SYMBOL_LIT_INTEGER :printf("INTEGER\n");break;
+	case KW_WORD :printf("KW_WORD\n");break;
 	}
 	for(i = 0 ; i < 4 &&  node->sons[i] != 0 ; i++)
-		printast(node->sons[i], i+1);
+		printast(node->sons[i], num+1);
 
 
 

@@ -148,7 +148,7 @@ arg: 							{$$ = 0;}
 	;
 
 
-value:	SYMBOL_LIT_INTEGER 				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
+value:	SYMBOL_LIT_INTEGER 				{$$ = astcreate(SYMBOL_LIT_INTEGER,$1,0,0,0,0);}
 	|SYMBOL_LIT_FALSE 				{$$ = astcreate(SYMBOL_LIT_FALSE,$1,0,0,0,0);}
 	|SYMBOL_LIT_TRUE	  			{$$ = astcreate(SYMBOL_LIT_TRUE,$1,0,0,0,0);}
 	|SYMBOL_LIT_CHAR   				{$$ = astcreate(SYMBOL_LIT_CHAR,$1,0,0,0,0);}
@@ -206,12 +206,12 @@ int main(int arc, char **argv)
 {
 
 	int out;
-
+	astree = 0;
 	yyin = fopen(argv[1], "r");
 	file = fopen(argv[2], "w+");
 
 	out = yyparse();
-	//printf("%i", astree->type);
+	printast(astree, 0);
 	asttofile(astree);
 
 	exit (out);
