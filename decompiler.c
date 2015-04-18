@@ -25,8 +25,8 @@ void asttofile(astree_node* node)
 			filewrite("(");
 			asttofile(node->sons[1]);
 			filewrite(")");
-			asttofile(node->sons[2]);
 			writechar('\n');
+			asttofile(node->sons[2]);
 			asttofile(node->sons[3]);
 			break;
 		case GLOBAL_VAR_DEF_INIT: 
@@ -100,6 +100,15 @@ void asttofile(astree_node* node)
 		case ARG_SEQ : 
 			asttofile(node->sons[0]);
 			filewrite(" , ");
+			asttofile(node->sons[1]);
+			break;
+		case KW_RETURN: 
+			filewrite("return ");
+			asttofile(node->sons[0]);
+			break;
+		case KW_OUTPUT: 
+			filewrite("output ");
+			asttofile(node->sons[0]);
 			asttofile(node->sons[1]);
 			break;
 		case OUT_REST: 
@@ -212,9 +221,28 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[0]);
 			filewrite(") ");
 			asttofile(node->sons[1]);
-
 			break;
-
+		case KW_THEN: 
+			filewrite("then ");
+			asttofile(node->sons[0]);
+			filewrite(" ");
+			asttofile(node->sons[1]);
+			break;
+		case KW_ELSE: 
+			filewrite("else ");
+			asttofile(node->sons[0]);
+			break;
+		case KW_LOOP: 
+			filewrite("loop (");
+			asttofile(node->sons[0]);
+			filewrite(" ; ");
+			asttofile(node->sons[1]);
+			filewrite(" ; ");
+			asttofile(node->sons[2]);
+			filewrite(") ");
+			writechar('\n');
+			asttofile(node->sons[3]);
+			break;
 	}
 
 }
