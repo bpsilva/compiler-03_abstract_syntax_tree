@@ -66,7 +66,7 @@ extern FILE * yyin;
 init: program 		{astree = $1;}
 	;
 program: 					{$$ = 0;}
-	|type function_def program		{$$ = astcreate(FUNC_DEF,0,$1,$2,$3,0);}
+	|type function_def program		{$$ = astcreate(INI_FUNC_DEF,0,$1,$2,$3,0);}
 	|type global_var_def program		{$$ = astcreate(GLOBAL_VAR_DEF,0,$1,$2,$3,0);}
 	;
 

@@ -4,8 +4,6 @@ word a:0;
 word $pt:0;
 word mat[1000];
 word v[10]:0 0 0 0 0 0 0 0 0 0;
-/*
- 
 
 word main()
 word i:0;
@@ -33,4 +31,4 @@ word maisuma ()
   {
   if (x < n) then return x+n else { return x; };
   }
-*/
+
