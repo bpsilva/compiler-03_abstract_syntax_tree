@@ -44,8 +44,9 @@ hash* insert(char* text, int type){
 	}
 	
 	struct hash *node = (hash*)malloc(sizeof(struct hash));
-	node->word = (char *)calloc(1, sizeof(text));
+	node->word = (char *)calloc(1,strlen(text)+1);
 	strcpy(node->word, text);
+	printf("%s\n", node->word);
 	node->prox = 0;
 	node->type = type;
 	

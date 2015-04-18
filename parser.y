@@ -149,13 +149,13 @@ arg: 							{$$ = 0;}
 
 
 value:	SYMBOL_LIT_INTEGER 				{$$ = astcreate(SYMBOL_LIT_INTEGER,$1,0,0,0,0);}
-	|SYMBOL_LIT_FALSE 				{$$ = astcreate(SYMBOL_LIT_FALSE,$1,0,0,0,0);}
-	|SYMBOL_LIT_TRUE	  			{$$ = astcreate(SYMBOL_LIT_TRUE,$1,0,0,0,0);}
-	|SYMBOL_LIT_CHAR   				{$$ = astcreate(SYMBOL_LIT_CHAR,$1,0,0,0,0);}
-	|SYMBOL_LIT_STRING				{$$ = astcreate(SYMBOL_LIT_STRING,$1,0,0,0,0);}
+	|SYMBOL_LIT_FALSE 					{$$ = astcreate(SYMBOL_LIT_FALSE,$1,0,0,0,0);}
+	|SYMBOL_LIT_TRUE	  				{$$ = astcreate(SYMBOL_LIT_TRUE,$1,0,0,0,0);}
+	|SYMBOL_LIT_CHAR   					{$$ = astcreate(SYMBOL_LIT_CHAR,$1,0,0,0,0);}
+	|SYMBOL_LIT_STRING					{$$ = astcreate(SYMBOL_LIT_STRING,$1,0,0,0,0);}
 	;
 	
-output_rest:						{$$ = 0;}
+output_rest:							{$$ = 0;}
 	|',' expression output_rest			{$$ = astcreate(OUT_REST,0,$2,$3,0,0);}
 	;
 
@@ -166,9 +166,9 @@ flux_control:
 	;
 
 then: 
-	KW_THEN option else 				{$$ = astcreate(KW_THEN,0,$2,$3,0,0);}
+	KW_THEN option else 			{$$ = astcreate(KW_THEN,0,$2,$3,0,0);}
 	;
-else: 							{$$ = 0;}
+else: 								{$$ = 0;}
 	| KW_ELSE option 				{$$ = astcreate(KW_ELSE,0,$2,0,0,0);}
 	;
 

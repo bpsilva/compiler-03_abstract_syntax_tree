@@ -57,7 +57,7 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[0]);
 			writechar('[');
 			asttofile(node->sons[1]);
-			writechar(']');
+			filewrite("] :");
 			asttofile(node->sons[2]);
 			writechar(';');
 			break;
@@ -112,7 +112,7 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[1]);
 			break;
 		case OUT_REST: 
-			filewrite(" , ");
+			filewrite(", ");
 			asttofile(node->sons[0]);
 			asttofile(node->sons[1]);
 			break;
@@ -248,7 +248,10 @@ void asttofile(astree_node* node)
 }
 void filewrite(char* text)
 {
-	fprintf(file, "%s", text);
+	
+	//fprintf(file, "%s", text);
+	fputs(text, file);
+
 	
 }
 void operationwrite(char* text, astree_node *node)
