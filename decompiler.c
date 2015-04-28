@@ -115,6 +115,10 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[0]);
 			asttofile(node->sons[1]);
 			break;
+		case KW_INPUT: 
+			filewrite("input");
+			asttofile(node->sons[0]);
+			break;
 		case OUT_REST: 
 			filewrite(", ");
 			asttofile(node->sons[0]);
@@ -219,6 +223,12 @@ void asttofile(astree_node* node)
 			break;
 		case KW_WORD: 
 			filewrite("word");
+			break;
+		case KW_BYTE: 
+			filewrite("byte");
+			break;
+		case KW_BOOL: 
+			filewrite("bool");
 			break;
 		case KW_IF: 
 			filewrite("if (");

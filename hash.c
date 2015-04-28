@@ -19,7 +19,7 @@ struct hash* pointer;
 int i = 0;
 	for(i = 0 ; i < TAM ; i++)
 	{
-		printf("%i: ", i);
+		
 		for(pointer = table[i]; pointer !=0 ; pointer = (struct hash*)pointer->prox)
 		{
 			printf("%s ", pointer->word);
@@ -34,7 +34,7 @@ int i = 0;
 struct hash* insert(char* text, int type){
 	int address = genAddress(text);
 	struct hash *pointer = table[address], *aux = table[address];
-	int achou = 0;
+
 
 	
 	for(;pointer!=0; aux = pointer,	pointer= (struct hash*)pointer->prox)
@@ -46,7 +46,7 @@ struct hash* insert(char* text, int type){
 	struct hash *node = (struct hash*)malloc(sizeof(struct hash));
 	node->word = (char *)calloc(1,strlen(text)+1);
 	strcpy(node->word, text);
-	printf("%s\n", node->word);
+
 	node->prox = 0;
 	node->type = type;
 	
