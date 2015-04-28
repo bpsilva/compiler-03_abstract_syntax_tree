@@ -1,5 +1,6 @@
 #ifndef _AST_H
 #define _AST_H
+#include "hash.h"
 #include <stdio.h>
 #define MAX_SONS 4
 typedef struct astree_node

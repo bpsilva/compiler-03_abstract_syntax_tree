@@ -4,8 +4,7 @@
 
 #include "AST.c"
 #include "hash.h"
-  
-
+#include "decompiler.h"
 
 extern FILE * yyin;
 %}
@@ -202,18 +201,26 @@ type: 	KW_WORD		{$$ = astcreate(KW_WORD,0,0,0,0,0);}
 	;
 %%
 
-int main(int arc, char **argv)
+int main(int argc, char **argv)
 {
 
 	int out;
 	astree = 0;
+
+	if(argc < 3)
+	{
+		printf("****Missing parameters***\n");
+		exit(10);
+	}
+		
+
+
 	yyin = fopen(argv[1], "r");
 	file = fopen(argv[2], "w+");
 
 	out = yyparse();
-	printast(astree, 0);
+	//printast(astree, 0);
 	asttofile(astree);
-
 	exit (out);
 
 }

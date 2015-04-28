@@ -1,9 +1,13 @@
-#include "decompiler.h"
+#include "AST.h"
 #include "hash.h"
+#include "decompiler.h"
 #include "y.tab.h"
 void asttofile(astree_node* node)
 {
+	
 	if(node!=0)
+	{
+			
 	switch(node->type)
 	{
 		
@@ -244,6 +248,8 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[3]);
 			break;
 	}
+	}
+
 
 }
 void filewrite(char* text)

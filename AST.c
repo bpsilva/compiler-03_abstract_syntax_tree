@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 
-astree_node* astcreate(int type, hash *symbol,  astree_node *son0,  astree_node *son1,  astree_node *son2, astree_node *son3)
+astree_node* astcreate(int type, struct hash *symbol,  astree_node *son0,  astree_node *son1,  astree_node *son2, astree_node *son3)
 {
 	astree_node *newnode = 0;
 	newnode = (astree_node*)calloc(1, sizeof(astree_node));

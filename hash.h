@@ -11,17 +11,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct hash
+struct hash
 {
 struct hash *prox;
 char* word;
 int type;
-}hash;
+};
 
-hash *table[TAM];
+struct hash *table[TAM];
 
 void print();
-hash* insert(char* text, int type);
+struct hash* insert(char* text, int type);
 void initMe();
 int genAddress();
 
