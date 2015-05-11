@@ -47,6 +47,7 @@ FILE *file;
 #define EXP_ADDR 43
 #define EXP_PTR 44
 #define INI_FUNC_DEF 45
+#define EXP_COMPARE 46
 astree_node* astcreate(int type, struct hash *symbol, astree_node *son0, astree_node *son1, astree_node *son2, astree_node *son3);
 void printast(astree_node* astree, int num);
 

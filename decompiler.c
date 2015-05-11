@@ -257,6 +257,7 @@ void asttofile(astree_node* node)
 			writechar('\n');
 			asttofile(node->sons[3]);
 			break;
+		default: printf("No rule applies");
 	}
 	}
 

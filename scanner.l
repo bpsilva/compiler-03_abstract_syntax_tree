@@ -49,6 +49,7 @@ TRUE				{yylval.symbol = (struct hash*)insert(yytext,  SYMBOL_LIT_TRUE);return S
 "'"."'" 			{yylval.symbol = (struct hash*)insert(yytext,  SYMBOL_LIT_CHAR);return SYMBOL_LIT_CHAR;}
 ["].*["]			{yylval.symbol = (struct hash*)insert(yytext,  SYMBOL_LIT_STRING);return SYMBOL_LIT_STRING;}
 " "
+"\t"				
 "//".*
 "/*"				BEGIN(COMMENT);
 <COMMENT>\n			{lineNumber++;}
