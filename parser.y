@@ -9,23 +9,23 @@
 extern FILE * yyin;
 %}
 
-%token KW_WORD  
-%token KW_BOOL      
-%token KW_BYTE    
-%token KW_IF       
-%token KW_THEN      
-%token KW_ELSE     
-%token KW_LOOP   
-%token KW_INPUT  
-%token KW_RETURN   
-%token KW_OUTPUT 
+%token KW_WORD  500
+%token KW_BOOL     501 
+%token KW_BYTE    502
+%token KW_IF       503
+%token KW_THEN      504	
+%token KW_ELSE     505
+%token KW_LOOP   506
+%token KW_INPUT  507
+%token KW_RETURN   508
+%token KW_OUTPUT 509
 
-%token OPERATOR_LE 
-%token OPERATOR_GE 
-%token OPERATOR_EQ 
-%token OPERATOR_NE
-%token OPERATOR_AND
-%token OPERATOR_OR 
+%token OPERATOR_LE 510
+%token OPERATOR_GE 511
+%token OPERATOR_EQ 512
+%token OPERATOR_NE 513
+%token OPERATOR_AND 514
+%token OPERATOR_OR 515
 
 %token TOKEN_ERROR 
 
