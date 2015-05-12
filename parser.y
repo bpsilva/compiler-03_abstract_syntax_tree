@@ -136,6 +136,8 @@ expression:
 	|'$'SYMBOL_IDENTIFIER  				{$$ = astcreate(EXP_PTR,0,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);} 
 	;
 
+
+
 op: '+' 	{$$ = EXP_ADD; }
 	|'-' 	{$$=EXP_SUB; }
 	|'*'	{$$=EXP_MUL;}
