@@ -77,12 +77,6 @@ void asttofile(astree_node* node)
 		case EXP_MUL: 
 			operationwrite("*",node);
 			break;
-		case EXP_OR : 
-			operationwrite("||",node);	
-			break;
-		case EXP_AND: 
-			operationwrite("&&",node);
-			break;
 		case EXP_LESS: 
 			operationwrite("<",node);
 			break;
@@ -116,7 +110,7 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[1]);
 			break;
 		case KW_INPUT: 
-			filewrite("input");
+			filewrite("input ");
 			asttofile(node->sons[0]);
 			break;
 		case OUT_REST: 
@@ -194,6 +188,36 @@ void asttofile(astree_node* node)
 			asttofile(node->sons[1]);
 			filewrite("] = ");	
 			asttofile(node->sons[2]);
+			break;
+		case OPERATOR_EQ : 
+			asttofile(node->sons[0]);
+			filewrite(" == ");	
+			asttofile(node->sons[1]);
+			break;
+		case OPERATOR_LE : 
+			asttofile(node->sons[0]);
+			filewrite(" <= ");	
+			asttofile(node->sons[1]);
+			break;
+		case OPERATOR_GE : 
+			asttofile(node->sons[0]);
+			filewrite(" >= ");	
+			asttofile(node->sons[1]);
+			break;
+		case OPERATOR_OR : 
+			asttofile(node->sons[0]);
+			filewrite(" || ");	
+			asttofile(node->sons[1]);
+			break;
+		case OPERATOR_AND : 
+			asttofile(node->sons[0]);
+			filewrite(" && ");	
+			asttofile(node->sons[1]);
+			break;
+		case OPERATOR_NE : 
+			asttofile(node->sons[0]);
+			filewrite(" != ");	
+			asttofile(node->sons[1]);
 			break;
 		case EXP_ADDR : 
 			filewrite("&");	

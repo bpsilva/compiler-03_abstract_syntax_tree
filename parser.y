@@ -48,13 +48,9 @@ extern FILE * yyin;
 %token <symbol>SYMBOL_LIT_STRING 6 
 %token  <symbol>SYMBOL_IDENTIFIER 7
 
-%type <astree> type init expression output_rest program global_var_def function_def  arg command_list simple_command atrib value  flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq commands
+%type <astree> type init expression output_rest program global_var_def function_def  arg command_list simple_command atrib value  flux_control then else option local_var_def_list local_var_def param paramseq symbol_lit_seq commands 
+%type <n> op
 
-
-%left '+' '-'
-%left '*' '/'
-%left '>' '<'
-%left "&&" "||"
 
  
 %left KW_IF KW_ELSE
@@ -121,21 +117,37 @@ atrib:
 	| SYMBOL_IDENTIFIER '[' expression ']' '=' expression  {$$ = astcreate(INDEX_ATRIB,0, astcreate(SYMBOL_IDENTIFIER, $1,0,0,0,0),$3,$6,0);}
 	;
 
+
 expression:
-	expression '+' expression			{$$ = astcreate(EXP_ADD,0,$1,$3,0,0);}
-	|expression '-'expression			{$$ = astcreate(EXP_SUB,0,$1,$3,0,0);}
-	|expression '*' expression			{$$ = astcreate(EXP_MUL,0,$1,$3,0,0);}
-	|expression '/' expression			{$$ = astcreate(EXP_DIV,0,$1,$3,0,0);}
-	|expression '>' expression 			{$$ = astcreate(EXP_MORE,0,$1,$3,0,0);}
-	|expression '<' expression 			{$$ = astcreate(EXP_LESS,0,$1,$3,0,0);}
-	|expression "||" expression 			{$$ = astcreate(EXP_OR,0,$1,$3,0,0);}
-	|expression "&&" expression 			{$$ = astcreate(EXP_AND,0,$1,$3,0,0);}
+	expression op expression			{$$ = astcreate($2,0,$1,$3,0,0);}
+	//|expression '-'expression			{$$ = astcreate(EXP_SUB,0,$1,$3,0,0);}
+	//|expression '*' expression			{$$ = astcreate(EXP_MUL,0,$1,$3,0,0);}
+	//|expression '/' expression			{$$ = astcreate(EXP_DIV,0,$1,$3,0,0);}
+	//|expression '>' expression 			{$$ = astcreate(EXP_MORE,0,$1,$3,0,0);}
+	//|expression OPERATOR_LE expression 			{$$ = astcreate(OPERATOR_LE,0,$1,$3,0,0);}
+	//|expression '<' expression 			{$$ = astcreate(EXP_LESS,0,$1,$3,0,0);}
+	//|expression "||" expression 			{$$ = astcreate(EXP_OR,0,$1,$3,0,0);}
+	//|expression "&&" expression 			{$$ = astcreate(EXP_AND,0,$1,$3,0,0);}
 	|SYMBOL_IDENTIFIER '[' expression ']' 		{$$ = astcreate(EXP_ARRAY_ACCESS,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
 	|SYMBOL_IDENTIFIER				{$$ = astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0);}
 	|value						{$$ = $1;}
 	|SYMBOL_IDENTIFIER '(' arg ')'			{$$ = astcreate(EXP_FUNC_CALL,0,astcreate(SYMBOL_IDENTIFIER,$1,0,0,0,0),$3,0,0);}
 	|'&'SYMBOL_IDENTIFIER				{$$ = astcreate(EXP_ADDR,0,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);} 
 	|'$'SYMBOL_IDENTIFIER  				{$$ = astcreate(EXP_PTR,0,astcreate(SYMBOL_IDENTIFIER,$2,0,0,0,0),0,0,0);} 
+	;
+
+op: '+' 	{$$ = EXP_ADD; }
+	|'-' 	{$$=EXP_SUB; }
+	|'*'	{$$=EXP_MUL;}
+	|'/'	{$$=EXP_DIV;}
+	| '>' 	{$$=EXP_MORE;}
+	|'<'	{$$=EXP_LESS;}
+	|OPERATOR_EQ	{$$=OPERATOR_EQ;}
+	|OPERATOR_GE	{$$=OPERATOR_GE;}
+	|OPERATOR_LE {$$=OPERATOR_LE;}
+	|OPERATOR_OR {$$=OPERATOR_OR;}
+	|OPERATOR_AND {$$=OPERATOR_AND;}
+	|OPERATOR_NE {$$=OPERATOR_NE;}
 	;
 
 
