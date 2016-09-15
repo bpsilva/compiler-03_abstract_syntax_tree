@@ -1,0 +1,35 @@
+// UFRGS - Compiladores - Marcelo Johann - 2015/1
+
+//global scope
+word a:0; // variable definition (initialized)
+word v[10]:0 0 0 0 0 0 0 0 0 0; //array definition (initialized)
+word mat[1000]; // array definition
+word $pt:0; //pointer definition
+
+word main() // function definition
+word i:0; //local variables
+word j:1;
+  {
+  output "Digite um numero: "; //print 
+  loop (i=0; i<10; ++i) // loop
+    {
+    ;  // line with no command
+    };
+  output "Incrementado algumas vezes fica ",a,"\n";
+  }
+
+word incn (word x, word n)
+  {
+  return x+n;
+  }
+  
+word outra (word x, word n) 
+  {
+  if (x < n) then return x+n else return x;
+  }
+
+word maisuma ()
+  {
+  if (x < n) then return x+n else { return x; };
+  }
+
