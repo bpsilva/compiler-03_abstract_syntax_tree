@@ -12,6 +12,7 @@ In order to run:
  **./etapa3 < entry_file out_file**  
 
 Four example entry files are provided: 'entry', 'example', 'example1' and 'example-error'.  
+
 ==================================================
 
 To better understand the software objective please go to the work description (in portuguese):  
@@ -19,6 +20,4 @@ To better understand the software objective please go to the work description (i
 
 See the previous stages of the project too:  
 [First stage](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)  
-[Second stage](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)  
-
-
+[Second stage](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)
