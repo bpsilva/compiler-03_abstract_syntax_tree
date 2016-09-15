@@ -1,4 +1,4 @@
-This is the first part of the project of building my own compiler. It is part of the the grade to the course of Compilers (INF01147) at Federal University of Rio Grande do Sul.  
+This is the third part of the project of building my own compiler. It is part of the the grade to the course of Compilers (INF01147) at Federal University of Rio Grande do Sul.  
 
 ==================================================  
 
