@@ -9,7 +9,7 @@ In order to run you must have flex and yacc installed (ubuntu/debian):
 After that you just need to run the Makefile:  
  **make**
 
-This software generates an abstract syntax tree that will make possible the next stage of the compiling process (semantic analysis).
+This software makes a lexical and syntactic analysis and generates an abstract syntax tree that will make possible the next stage of the compiling process (semantic analysis).
 As an evidence of the correct generation of the tree, it makes the inverse path too. That is, based on the tree, it generates a code file that should be equivalent to the original one.  
 
 In order to run:  
