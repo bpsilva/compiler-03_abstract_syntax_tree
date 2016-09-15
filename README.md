@@ -11,7 +11,7 @@ To prove correct generation of the tree, it makes the inverse path too. That is,
 In order to run:  
  **./etapa3 < entry_file out_file**  
 
-Four example entry files are provided: 'entry', 'example', 'example1' and 'example-error'.  
+Four entry file examples are provided: 'entry', 'example', 'example1' and 'example-error'.  
 
 ==================================================
 
@@ -20,4 +20,4 @@ To better understand the software objective please go to the work description (i
 
 See the previous stages of the project too (they are both included in this project):  
 [First stage: lexical analysis](https://bitbucket.org/bpsilva/compiler-01_lexical_analysis)  
-[Second stage](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)
+[Second stage: syntactic analysis](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis)
