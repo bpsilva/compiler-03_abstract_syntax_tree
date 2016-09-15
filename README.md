@@ -18,6 +18,6 @@ Four example entry files are provided: 'entry', 'example', 'example1' and 'examp
 To better understand the software objective please go to the work description (in portuguese):  
 [Work description](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)  
 
-See the previous stages of the project too:  
+See the previous stages of the project too (they are both included in this project):  
 [First stage: lexical analysis](https://bitbucket.org/bpsilva/compiler-01_lexical_analysis)  
 [Second stage](https://bitbucket.org/bpsilva/compiler-02_syntactic_analysis/raw/ca77046c56d9f7fafab516dc0e3f3a504c5a924e/definition.pdf)
