@@ -16,7 +16,7 @@ Four entry file examples are provided: 'entry', 'example', 'example1' and 'examp
 ==================================================
 
 To better understand the software objective please go to the work description (in portuguese):  
-[Work description](https://bitbucket.org/bpsilva/compiler-03_abstract_syntax_tree/raw/246e027fb2873b12aec9ddeac5425e4f8d27dcff/definition.pdf)  
+[Task description](https://bitbucket.org/bpsilva/compiler-03_abstract_syntax_tree/raw/246e027fb2873b12aec9ddeac5425e4f8d27dcff/definition.pdf)  
 
 See the previous stages of the project too (they are both included in this stage):  
 [First stage: lexical analysis](https://bitbucket.org/bpsilva/compiler-01_lexical_analysis)  
